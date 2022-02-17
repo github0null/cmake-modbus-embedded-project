@@ -7,6 +7,13 @@
 #ifndef MODBUS_PRIVATE_H
 #define MODBUS_PRIVATE_H
 
+#include <config.h>
+
+#ifdef _EMBED_SYSTEM
+# include <stdint.h>
+# include <time.h>
+typedef int ssize_t;
+#else
 #ifndef _MSC_VER
 # include <stdint.h>
 # include <sys/time.h>
@@ -16,7 +23,7 @@
 typedef int ssize_t;
 #endif
 #include <sys/types.h>
-#include <config.h>
+#endif // !_EMBED_SYSTEM
 
 #include "modbus.h"
 

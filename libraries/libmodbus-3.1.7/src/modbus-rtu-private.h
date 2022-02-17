@@ -7,6 +7,11 @@
 #ifndef MODBUS_RTU_PRIVATE_H
 #define MODBUS_RTU_PRIVATE_H
 
+#include <config.h>
+
+#ifdef _EMBED_SYSTEM
+#include <stdint.h>
+#else
 #ifndef _MSC_VER
 #include <stdint.h>
 #else
@@ -17,6 +22,7 @@
 #include <windows.h>
 #else
 #include <termios.h>
+#endif
 #endif
 
 #define _MODBUS_RTU_HEADER_LENGTH      1
@@ -53,7 +59,9 @@ typedef struct _modbus_rtu {
     uint8_t stop_bit;
     /* Parity: 'N', 'O', 'E' */
     char parity;
-#if defined(_WIN32)
+#if defined(_EMBED_SYSTEM)
+    serial_handle_t h_ser;
+#elif defined(_WIN32)
     struct win32_ser w_ser;
     DCB old_dcb;
 #else

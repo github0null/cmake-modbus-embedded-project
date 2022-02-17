@@ -23,6 +23,6 @@ target_link_options(${PRJ_NAME} PRIVATE
     --scatter "${CMAKE_CURRENT_LIST_DIR}/linker_script.sct"
     --list "${CMAKE_BINARY_DIR}/${PRJ_NAME}.map")
 
-target_link_libraries(${PRJ_NAME} libmodbus)
+target_link_libraries(${PRJ_NAME} modbus)
 
 output_binary_files(${PRJ_NAME})

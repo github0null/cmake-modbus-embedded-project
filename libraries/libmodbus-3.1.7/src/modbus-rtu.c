@@ -6,12 +6,20 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <config.h>
+
+#ifndef _EMBED_SYSTEM
 #include <errno.h>
 #include <fcntl.h>
-#include <string.h>
 #ifndef _MSC_VER
 #include <unistd.h>
 #endif
+#else
+#include <errno.h>
+#include "modbus_port.h"
+#endif
+
+#include <string.h>
 #include <assert.h>
 
 #include "modbus-private.h"
@@ -161,7 +169,9 @@ static int _modbus_rtu_send_msg_pre(uint8_t *req, int req_length)
     return req_length;
 }
 
-#if defined(_WIN32)
+#if defined(_EMBED_SYSTEM)
+    // nothing todo
+#elif defined(_WIN32)
 
 /* This simple implementation is sort of a substitute of the select() call,
  * working this way: the win32_ser_select() call tries to read some data from
@@ -269,7 +279,10 @@ static void _modbus_rtu_ioctl_rts(modbus_t *ctx, int on)
 
 static ssize_t _modbus_rtu_send(modbus_t *ctx, const uint8_t *req, int req_length)
 {
-#if defined(_WIN32)
+#if defined(_EMBED_SYSTEM)
+    modbus_rtu_t *ctx_rtu = ctx->backend_data;
+    return (ssize_t)modbus_rtu_port_send(ctx_rtu->h_ser, (uint8_t *)req, req_length);
+#elif defined(_WIN32)
     modbus_rtu_t *ctx_rtu = ctx->backend_data;
     DWORD n_bytes = 0;
     return (WriteFile(ctx_rtu->w_ser.fd, req, req_length, &n_bytes, NULL)) ? (ssize_t)n_bytes : -1;
@@ -326,7 +339,10 @@ static int _modbus_rtu_receive(modbus_t *ctx, uint8_t *req)
 
 static ssize_t _modbus_rtu_recv(modbus_t *ctx, uint8_t *rsp, int rsp_length)
 {
-#if defined(_WIN32)
+#if defined(_EMBED_SYSTEM)
+    modbus_rtu_t *ctx_rtu = ctx->backend_data;
+    return (ssize_t)modbus_rtu_port_recv(ctx_rtu->h_ser, rsp, (size_t)rsp_length);
+#elif defined(_WIN32)
     return win32_ser_read(&((modbus_rtu_t *)ctx->backend_data)->w_ser, rsp, rsp_length);
 #else
     return read(ctx->s, rsp, rsp_length);
@@ -396,7 +412,9 @@ static int _modbus_rtu_check_integrity(modbus_t *ctx, uint8_t *msg,
 /* Sets up a serial port for RTU communications */
 static int _modbus_rtu_connect(modbus_t *ctx)
 {
-#if defined(_WIN32)
+#if defined(_EMBED_SYSTEM)
+    int32_t err_code;
+#elif defined(_WIN32)
     DCB dcb;
 #else
     struct termios tios;
@@ -411,7 +429,12 @@ static int _modbus_rtu_connect(modbus_t *ctx)
                ctx_rtu->data_bit, ctx_rtu->stop_bit);
     }
 
-#if defined(_WIN32)
+#if defined(_EMBED_SYSTEM)
+    err_code = modbus_rtu_port_open((void *)ctx_rtu);
+    if (err_code < 0) {
+        return -1;
+    }
+#elif defined(_WIN32)
     /* Some references here:
      * http://msdn.microsoft.com/en-us/library/aa450602.aspx
      */
@@ -1120,7 +1143,9 @@ static void _modbus_rtu_close(modbus_t *ctx)
     /* Restore line settings and close file descriptor in RTU mode */
     modbus_rtu_t *ctx_rtu = ctx->backend_data;
 
-#if defined(_WIN32)
+#if defined(_EMBED_SYSTEM)
+    (void)modbus_rtu_port_clos((void *)ctx_rtu);
+#elif defined(_WIN32)
     /* Revert settings */
     if (!SetCommState(ctx_rtu->w_ser.fd, &ctx_rtu->old_dcb) && ctx->debug) {
         fprintf(stderr, "ERROR Couldn't revert to configuration (LastError %d)\n",
@@ -1142,7 +1167,10 @@ static void _modbus_rtu_close(modbus_t *ctx)
 
 static int _modbus_rtu_flush(modbus_t *ctx)
 {
-#if defined(_WIN32)
+#if defined(_EMBED_SYSTEM)
+    modbus_rtu_t *ctx_rtu = ctx->backend_data;
+    return modbus_rtu_port_flush((void *)ctx_rtu);
+#elif defined(_WIN32)
     modbus_rtu_t *ctx_rtu = ctx->backend_data;
     ctx_rtu->w_ser.n_bytes = 0;
     return (PurgeComm(ctx_rtu->w_ser.fd, PURGE_RXCLEAR) == FALSE);
@@ -1155,7 +1183,18 @@ static int _modbus_rtu_select(modbus_t *ctx, fd_set *rset,
                               struct timeval *tv, int length_to_read)
 {
     int s_rc;
-#if defined(_WIN32)
+#if defined(_EMBED_SYSTEM)
+    s_rc = modbus_rtu_port_select(ctx, rset, tv, length_to_read);
+    
+    if (s_rc == -1) {
+        errno = ETIMEDOUT;
+        return -1;
+    }
+
+    if (s_rc < -1) {
+        return -1;
+    }
+#elif defined(_WIN32)
     s_rc = win32_ser_select(&((modbus_rtu_t *)ctx->backend_data)->w_ser,
                             length_to_read, tv);
     if (s_rc == 0) {

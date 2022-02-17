@@ -2,6 +2,17 @@
     "cmake.generator": "Ninja",
     "files.associations": {
         "stm32f10x.h": "c",
-        "modbus-version.h": "c"
+        "modbus-version.h": "c",
+        "errno.h": "c",
+        "limits.h": "c",
+        "winsock2.h": "c",
+        "config.h": "c",
+        "unistd.h": "c",
+        "types.h": "c",
+        "time.h": "c",
+        "modbus.h": "c",
+        "modbus-rtu-private.h": "c",
+        "modbus-tcp-private.h": "c",
+        "modbus_rtu_port.h": "c"
     }
 }

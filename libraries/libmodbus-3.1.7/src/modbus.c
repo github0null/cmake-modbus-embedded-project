@@ -13,12 +13,16 @@
 #include <stdarg.h>
 #include <errno.h>
 #include <limits.h>
+#include <config.h>
+
+#ifndef _EMBED_SYSTEM
 #include <time.h>
 #ifndef _MSC_VER
 #include <unistd.h>
 #endif
-
-#include <config.h>
+#else
+#include "modbus_port.h"
+#endif // _EMBED_SYSTEM
 
 #include "modbus.h"
 #include "modbus-private.h"
@@ -151,7 +155,7 @@ static unsigned int compute_response_length_from_request(modbus_t *ctx, uint8_t 
     case MODBUS_FC_REPORT_SLAVE_ID:
         /* The response is device specific (the header provides the
            length) */
-        return MSG_LENGTH_UNDEFINED;
+        return (unsigned int)MSG_LENGTH_UNDEFINED;
     case MODBUS_FC_MASK_WRITE_REGISTER:
         length = 7;
         break;
@@ -923,7 +927,7 @@ int modbus_reply(modbus_t *ctx, const uint8_t *req,
         }
         errno = ENOPROTOOPT;
         return -1;
-        break;
+        //break;
     case MODBUS_FC_MASK_WRITE_REGISTER: {
         int mapping_address = address - mb_mapping->start_registers;
 
