@@ -1,10 +1,4 @@
-#include <stdint.h>
-
-#include "config.h"
-#include "modbus.h"
-
 #include "modbus_port.h"
-#include "modbus-rtu-private.h"
 
 #ifndef __ARMEB__
 #define LITTLE_ENDIAN
@@ -12,7 +6,35 @@
 
 /////////////////////////////// modbus port apis ///////////////////////////////////
 
+int32_t modbus_rtu_port_open(modbus_rtu_t *cfg)
+{
+    //TODO
+}
 
+int32_t modbus_rtu_port_clos(modbus_rtu_t *cfg)
+{
+    //TODO
+}
+
+int32_t modbus_rtu_port_send(serial_handle_t handle, uint8_t *buff, size_t len)
+{
+    //TODO
+}
+
+int32_t modbus_rtu_port_recv(serial_handle_t handle, uint8_t *buff, size_t len)
+{
+    //TODO
+}
+
+int32_t modbus_rtu_port_flush(modbus_rtu_t *cfg)
+{
+    //TODO
+}
+
+int32_t modbus_rtu_port_select(modbus_t *ctx, fd_set *rset, struct timeval *tv, int msg_length)
+{
+    //TODO
+}
 
 /////////////////////////////// other utils port ///////////////////////////////////
 

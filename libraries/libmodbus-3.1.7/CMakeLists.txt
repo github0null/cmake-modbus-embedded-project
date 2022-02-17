@@ -22,6 +22,7 @@ set(libmodbus_SRCS
     src/modbus.c
     src/modbus-data.c
     src/modbus-rtu.c
+    ports/modbus_port.c
     ports/modbus_rtu_port.c)
 
 add_library(${LIB_NAME} STATIC 
