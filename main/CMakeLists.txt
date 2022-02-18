@@ -11,8 +11,9 @@ target_include_directories(${PRJ_NAME} PUBLIC
 
 target_link_libraries(${PRJ_NAME} periph_interface modbus)
 
-target_link_options(${PRJ_NAME} PRIVATE 
-    -T "${CMAKE_SOURCE_DIR}/STM32F407ZETx_FLASH.ld")
+target_link_options(${PRJ_NAME} PRIVATE
+    -T "${CMAKE_SOURCE_DIR}/STM32F407ZETx_FLASH.ld"
+    -Wl,-Map=./${PRJ_NAME}.map)
 
 output_binary_files(${PRJ_NAME})
 output_flash_command(${PRJ_NAME})
