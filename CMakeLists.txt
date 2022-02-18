@@ -5,8 +5,14 @@ set(COMPILER_TYPE "arm-none-eabi") # options: 'armcc' or 'arm-none-eabi'
 set(MCU_ARCH_TYPE "cortex_m4") # options: 'cortex_m0', 'cortex_m3' ...
 set(MCU_MFPU_TYPE "default") # options: 'sp', 'dp', 'none', 'default'
 
+# flasher config
+set(FLASHER_TYPE_NAME "jlink")
+set(FLASHER_PORT_TYPE "swd")
+set(FLASHER_MCPU_NAME "STM32F407ZG")
+
 # Include toolchain config
-include(${CMAKE_SOURCE_DIR}/cmake/${COMPILER_TYPE}/${MCU_ARCH_TYPE}.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/toolchain/${COMPILER_TYPE}/${MCU_ARCH_TYPE}.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/flasher/${FLASHER_TYPE_NAME}-${FLASHER_PORT_TYPE}.cmake)
 
 # Set up project name
 set(PRJ_NAME "modbus_rtu_embed")
@@ -16,14 +22,6 @@ project(${PRJ_NAME}
     VERSION "0.1.0"
     LANGUAGES C ASM CXX)
 
-# Add executable
-aux_source_directory(main MAIN_SRCS)
-add_executable(${PRJ_NAME} ${MAIN_SRCS})
-target_include_directories(${PRJ_NAME} PUBLIC main)
-
 # Add libraries
 add_subdirectory(libraries)
-target_link_libraries(${PRJ_NAME} periph_config modbus)
-
-target_link_options(${PRJ_NAME} PRIVATE -T "${CMAKE_CURRENT_LIST_DIR}/STM32F407ZETx_FLASH.ld")
-output_binary_files(${PRJ_NAME})
+add_subdirectory(main)

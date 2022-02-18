@@ -97,7 +97,9 @@ void _error_print(modbus_t *ctx, const char *context)
 static void _sleep_response_timeout(modbus_t *ctx)
 {
     /* Response timeout is always positive */
-#ifdef _WIN32
+#if defined(_EMBED_SYSTEM)
+    modbus_sleep_us((ctx->response_timeout.tv_sec * 1000) + ctx->response_timeout.tv_usec);
+#elif defined(_WIN32)
     /* usleep doesn't exist on Windows */
     Sleep((ctx->response_timeout.tv_sec * 1000) +
           (ctx->response_timeout.tv_usec / 1000));

@@ -16,6 +16,8 @@
         "modbus_rtu_port.h": "c",
         "modbus_port.h": "c",
         "errno_def.h": "c",
-        "stm32f4xx.h": "c"
+        "stm32f4xx.h": "c",
+        "app_main.h": "c",
+        "main.h": "c"
     }
 }

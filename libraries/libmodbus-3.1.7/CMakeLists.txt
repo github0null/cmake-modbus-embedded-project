@@ -35,3 +35,5 @@ target_include_directories(${LIB_NAME} PUBLIC
 
 target_include_directories(${LIB_NAME} PRIVATE
     ${CMAKE_CURRENT_BINARY_DIR}/conf)
+
+target_link_libraries(${LIB_NAME} periph_interface)

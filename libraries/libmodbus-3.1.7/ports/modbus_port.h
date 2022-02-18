@@ -10,7 +10,12 @@
 #include "modbus-rtu-private.h"
 #include "modbus-tcp-private.h"
 
-extern int32_t nanosleep(const struct timespec *request, struct timespec *remain);
+/**
+ * @brief sleep some us
+ * 
+ * @param us 
+ */
+extern void modbus_sleep_us(uint32_t us);
 
 /**
  * @brief open serialport

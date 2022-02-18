@@ -15,6 +15,11 @@ set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 
+set(CMAKE_EXECUTABLE_SUFFIX     .elf)
+set(CMAKE_EXECUTABLE_SUFFIX_C   .elf)
+set(CMAKE_EXECUTABLE_SUFFIX_CXX .elf)
+set(CMAKE_EXECUTABLE_SUFFIX_ASM .elf)
+
 # this makes the test compiles use static library option so that we don't need to pre-set linker flags and scripts
 #set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
@@ -34,11 +39,11 @@ SET(CMAKE_ASM_FLAGS_RELEASE "" CACHE INTERNAL "asm release compiler flags")
 #
 # some utility functions
 #
-function(output_binary_files target_name)    
+function(output_binary_files target_name)
     add_custom_command(TARGET "${target_name}" POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E echo "output hex, bin ..."
-        COMMAND ${CMAKE_OBJCOPY} -O ihex   "${target_name}" "${target_name}.hex"
-        COMMAND ${CMAKE_OBJCOPY} -O binary "${target_name}" "${target_name}.bin"
-        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        COMMAND ${CMAKE_OBJCOPY} -O ihex   "${target_name}.elf" "${target_name}.hex"
+        COMMAND ${CMAKE_OBJCOPY} -O binary "${target_name}.elf" "${target_name}.bin"
+        WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
         VERBATIM)
 endfunction()

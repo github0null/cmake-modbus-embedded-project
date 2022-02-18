@@ -1,5 +1,5 @@
 
-set(MODULE_NAME "periph_config")
+get_filename_component(MODULE_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 
 aux_source_directory(Core/Src CORE_SRCS)
 aux_source_directory(Drivers/STM32F4xx_HAL_Driver/Src DRV_SRCS)
@@ -18,4 +18,5 @@ target_include_directories(${MODULE_NAME} PUBLIC
 
 target_compile_definitions(${MODULE_NAME} PUBLIC    
     USE_HAL_DRIVER
+    USE_FULL_LL_DRIVER
     STM32F407xx)

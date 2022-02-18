@@ -1,0 +1,44 @@
+---
+BasedOnStyle: Microsoft
+Language: Cpp
+
+###################################
+#           缩进配置
+###################################
+
+UseTab: Never
+IndentWidth: 4
+TabWidth: 4
+BreakBeforeBraces: Allman
+ColumnLimit: 0
+AccessModifierOffset: -4
+NamespaceIndentation: All
+FixNamespaceComments: false
+
+###################################
+#          其他样式选项
+###################################
+
+# 其他风格
+# https://clang.llvm.org/docs/ClangFormatStyleOptions.html
+
+# 允许短的 if 语句保持在同一行
+AllowShortIfStatementsOnASingleLine: true
+
+# 允许短的循环保持在同一行
+AllowShortLoopsOnASingleLine: true
+
+# 允许短的块保持在同一行
+AllowShortBlocksOnASingleLine: true
+
+# 缩进 case 标签
+IndentCaseLabels: true
+
+# 允许排序 #include
+SortIncludes: false
+
+# 对齐宏定义
+AlignConsecutiveMacros: AcrossEmptyLines
+
+# 对齐赋值语句
+AlignConsecutiveAssignments: AcrossComments

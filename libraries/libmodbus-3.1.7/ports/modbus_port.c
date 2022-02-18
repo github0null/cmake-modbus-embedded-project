@@ -1,6 +1,7 @@
 #include "modbus_port.h"
+#include "periph_interface.h"
 
-int32_t nanosleep(const struct timespec *request, struct timespec *remain)
+void modbus_sleep_us(uint32_t us)
 {
-    //TODO
+    drv_delay_us(us);
 }

@@ -3,7 +3,9 @@
 
 void app_main()
 {
-    while (1)
+    while (true)
     {
+        drv_led_trigger(LED0_Pin);
+        drv_delay_us(500 * 1000);
     }
 }

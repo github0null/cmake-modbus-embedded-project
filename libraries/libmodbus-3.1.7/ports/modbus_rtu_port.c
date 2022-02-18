@@ -1,4 +1,5 @@
 #include "modbus_port.h"
+#include "periph_interface.h"
 
 #ifdef __CC_ARM
 #if !defined(__ARMEB__)
