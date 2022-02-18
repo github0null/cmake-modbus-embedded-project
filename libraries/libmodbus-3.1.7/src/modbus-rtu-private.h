@@ -7,7 +7,7 @@
 #ifndef MODBUS_RTU_PRIVATE_H
 #define MODBUS_RTU_PRIVATE_H
 
-#include <config.h>
+#include "config.h"
 
 #ifdef _EMBED_SYSTEM
 #include <stdint.h>

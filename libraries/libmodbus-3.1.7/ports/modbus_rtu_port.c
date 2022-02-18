@@ -1,8 +1,10 @@
 #include "modbus_port.h"
 
-#ifndef __ARMEB__
+#ifdef __CC_ARM
+#if !defined(__ARMEB__)
 #define LITTLE_ENDIAN
 #endif // !__ARMEB__
+#endif // __CC_ARM
 
 /////////////////////////////// modbus port apis ///////////////////////////////////
 
@@ -88,5 +90,5 @@ static int32_t _err_id = 0;
 
 int *_errno(void)
 {
-    return &_err_id;
+    return (int *)&_err_id;
 }

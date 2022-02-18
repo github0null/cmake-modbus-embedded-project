@@ -185,12 +185,14 @@ extern uint32_t ntohl(uint32_t nl);
 /* _TIMEVAL_DEFINED */
 #ifndef _TIMEVAL_DEFINED
 #define _TIMEVAL_DEFINED
-
 struct timeval
 {
 	long tv_sec;
 	long tv_usec;
 };
+#endif /* _TIMEVAL_DEFINED */
+
+#ifdef __CC_ARM
 
 struct timespec
 {
@@ -226,6 +228,12 @@ typedef struct fd_set
 			((fd_set *)(set))->fd_array[((fd_set *)(set))->fd_count++] = (fd); \
 	} while (0)
 
+#elif __GNUC__
+
+#include <time.h>
+
+#endif // !__CC_ARM
+
 /* dev structs define */
 typedef void *serial_handle_t;
 
@@ -233,7 +241,6 @@ typedef void *serial_handle_t;
 #include "errno_def.h"
 extern int *_errno(void);
 
-#endif /* _TIMEVAL_DEFINED */
 #endif // _EMBED_SYSTEM
 
 #endif // !1

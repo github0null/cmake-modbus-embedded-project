@@ -5,25 +5,25 @@ if(CMAKE_HOST_WIN32)
         set(CMAKE_C_COMPILER    "armcc.exe")
         set(CMAKE_CXX_COMPILER  "armcc.exe")
         set(CMAKE_ASM_COMPILER  "armasm.exe")
-        set(AR                  "armar.exe")
-        set(LD                  "armlink.exe")
-        set(OBJCOPY             "fromelf.exe")
+        set(CMAKE_AR            "armar.exe")
+        set(CMAKE_LINKER        "armlink.exe")
+        set(CMAKE_OBJCOPY       "fromelf.exe")
     else()
         message(STATUS "Armcc toolchain path: '${TOOLCHAIN_DIR}'")
         set(CMAKE_C_COMPILER    "${TOOLCHAIN_DIR}/armcc.exe")
         set(CMAKE_CXX_COMPILER  "${TOOLCHAIN_DIR}/armcc.exe")
         set(CMAKE_ASM_COMPILER  "${TOOLCHAIN_DIR}/armasm.exe")
-        set(AR                  "${TOOLCHAIN_DIR}/armar.exe")
-        set(LD                  "${TOOLCHAIN_DIR}/armlink.exe")
-        set(OBJCOPY             "${TOOLCHAIN_DIR}/fromelf.exe")
+        set(CMAKE_AR            "${TOOLCHAIN_DIR}/armar.exe")
+        set(CMAKE_LINKER        "${TOOLCHAIN_DIR}/armlink.exe")
+        set(CMAKE_OBJCOPY       "${TOOLCHAIN_DIR}/fromelf.exe")
     endif()
 else()
     set(CMAKE_C_COMPILER    "armcc")
     set(CMAKE_CXX_COMPILER  "armcc")
     set(CMAKE_ASM_COMPILER  "armasm")
-    set(AR                  "armar")
-    set(LD                  "armlink")
-    set(OBJCOPY             "fromelf")
+    set(CMAKE_AR            "armar")
+    set(CMAKE_LINKER        "armlink")
+    set(CMAKE_OBJCOPY       "fromelf")
 endif()
 
 set(CMAKE_C_COMPILER_WORKS TRUE)
@@ -63,9 +63,9 @@ SET(CMAKE_ASM_FLAGS_RELEASE "" CACHE INTERNAL "asm release compiler flags")
 function(output_binary_files target_name)    
     add_custom_command(TARGET "${target_name}" POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E echo "output hex, s19, bin ..."
-        COMMAND ${OBJCOPY} --i32combined --output "${target_name}.hex" "${target_name}.elf"
-        COMMAND ${OBJCOPY} --m32combined --output "${target_name}.s19" "${target_name}.elf"
-        COMMAND ${OBJCOPY} --bincombined --output "${target_name}.bin" "${target_name}.elf"
+        COMMAND ${CMAKE_OBJCOPY} --i32combined --output "${target_name}.hex" "${target_name}.elf"
+        COMMAND ${CMAKE_OBJCOPY} --m32combined --output "${target_name}.s19" "${target_name}.elf"
+        COMMAND ${CMAKE_OBJCOPY} --bincombined --output "${target_name}.bin" "${target_name}.elf"
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
         VERBATIM)
 endfunction()

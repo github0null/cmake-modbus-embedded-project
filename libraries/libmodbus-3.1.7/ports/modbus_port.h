@@ -6,7 +6,9 @@
 
 #include "config.h"
 #include "modbus.h"
+
 #include "modbus-rtu-private.h"
+#include "modbus-tcp-private.h"
 
 extern int32_t nanosleep(const struct timespec *request, struct timespec *remain);
 
