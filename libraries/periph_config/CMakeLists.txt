@@ -1,22 +1,19 @@
+#
+# add sub folder by device name
+#
+file(GLOB sub_files RELATIVE "${CMAKE_CURRENT_LIST_DIR}" "${CMAKE_CURRENT_LIST_DIR}/*")
+foreach(dir_name ${sub_files})
+    if(${dir_name} STREQUAL ${MCPU_NAME})
+        if(IS_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/${dir_name}")
+            if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/${dir_name}/CMakeLists.txt")
+                add_subdirectory("${dir_name}")
+                set(periph_conf_valid true)
+                break()
+            endif()
+        endif()
+    endif()
+endforeach()
 
-get_filename_component(MODULE_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
-
-aux_source_directory(Core/Src CORE_SRCS)
-aux_source_directory(Drivers/STM32F4xx_HAL_Driver/Src DRV_SRCS)
-
-add_library(${MODULE_NAME} STATIC 
-    ${CORE_SRCS}
-    ${DRV_SRCS}
-    startup_stm32f407xx.s)
-
-target_include_directories(${MODULE_NAME} PUBLIC 
-    Core/Inc
-    Drivers/CMSIS/Include
-    Drivers/CMSIS/Device/ST/STM32F4xx/Include
-    Drivers/STM32F4xx_HAL_Driver/Inc
-    Drivers/STM32F4xx_HAL_Driver/Inc/Legacy)
-
-target_compile_definitions(${MODULE_NAME} PUBLIC    
-    USE_HAL_DRIVER
-    USE_FULL_LL_DRIVER
-    STM32F407xx)
+if(NOT periph_conf_valid)
+    message(FATAL_ERROR "Now, we not support device: '${MCPU_NAME}'")
+endif()

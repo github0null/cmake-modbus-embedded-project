@@ -3,17 +3,16 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 aux_source_directory(. MAIN_SRCS)
 
-add_executable(${PRJ_NAME} 
+add_executable(${PROJECT_NAME}
     ${MAIN_SRCS})
 
-target_include_directories(${PRJ_NAME} PUBLIC 
+target_include_directories(${PROJECT_NAME} PUBLIC 
     .)
 
-target_link_libraries(${PRJ_NAME} periph_interface modbus)
+target_link_libraries(${PROJECT_NAME} periph_interface modbus)
 
-target_link_options(${PRJ_NAME} PRIVATE
-    -T "${CMAKE_SOURCE_DIR}/STM32F407ZETx_FLASH.ld"
-    -Wl,-Map=./${PRJ_NAME}.map)
+target_link_options(${PROJECT_NAME} PRIVATE
+    -Wl,-Map=./${PROJECT_NAME}.map)
 
-output_binary_files(${PRJ_NAME})
-output_flash_command(${PRJ_NAME})
+output_binary_files(${PROJECT_NAME})
+output_flash_command(${PROJECT_NAME})
