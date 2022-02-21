@@ -11,8 +11,7 @@ add_library(${MODULE_NAME} OBJECT
     ${DRV_SRCS}
     startup_stm32f407xx.s)
 
-target_include_directories(${MODULE_NAME} PUBLIC 
-    ${CMAKE_CURRENT_LIST_DIR}/../periph_interface
+target_include_directories(${MODULE_NAME} PUBLIC "${CMAKE_CURRENT_LIST_DIR}/../interface"
     Core/Inc
     Drivers/CMSIS/Include
     Drivers/CMSIS/Device/ST/STM32F4xx/Include
