@@ -9,7 +9,9 @@ add_executable(${PROJECT_NAME}
 target_include_directories(${PROJECT_NAME} PUBLIC 
     .)
 
-target_link_libraries(${PROJECT_NAME} periph_interface modbus)
+target_link_libraries(${PROJECT_NAME} 
+    periph_config
+    modbus)
 
 target_link_options(${PROJECT_NAME} PRIVATE
     -Wl,-Map=./${PROJECT_NAME}.map)

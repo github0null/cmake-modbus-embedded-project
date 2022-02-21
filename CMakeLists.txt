@@ -8,14 +8,14 @@ set(MCU_MFPU_TYPE "default") # options: 'sp', 'dp', 'none', 'default'
 # flasher config
 set(FLASHER_TYPE_NAME "jlink")
 set(FLASHER_PORT_TYPE "swd")
-set(FLASHER_MCPU_NAME "stm32f407ze")
+set(FLASHER_MCPU_NAME "stm32f407zg")
 
 # Include toolchain config
 include(${CMAKE_SOURCE_DIR}/cmake/toolchain/${COMPILER_TYPE}/${MCU_ARCH_TYPE}.cmake)
 include(${CMAKE_SOURCE_DIR}/cmake/flasher/${FLASHER_TYPE_NAME}-${FLASHER_PORT_TYPE}.cmake)
 
 # Set up mcpu name
-set(MCPU_NAME "stm32f407zetx")
+set(MCPU_NAME "stm32f407zgtx")
 
 # Set up the project
 project("modbus_rtu_embed"

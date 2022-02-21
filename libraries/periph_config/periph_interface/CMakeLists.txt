@@ -3,7 +3,7 @@ get_filename_component(MODULE_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 
 aux_source_directory(. SRCS)
 
-add_library(${MODULE_NAME} STATIC
+add_library(${MODULE_NAME} OBJECT
     ${SRCS})
 
 target_include_directories(${MODULE_NAME} PUBLIC

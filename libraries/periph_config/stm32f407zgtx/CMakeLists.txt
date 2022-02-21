@@ -1,15 +1,18 @@
 
 set(MODULE_NAME "periph_config")
 
+aux_source_directory(. SRCS)
 aux_source_directory(Core/Src CORE_SRCS)
 aux_source_directory(Drivers/STM32F4xx_HAL_Driver/Src DRV_SRCS)
 
-add_library(${MODULE_NAME} STATIC 
+add_library(${MODULE_NAME} OBJECT 
+    ${SRCS}
     ${CORE_SRCS}
     ${DRV_SRCS}
     startup_stm32f407xx.s)
 
 target_include_directories(${MODULE_NAME} PUBLIC 
+    ${CMAKE_CURRENT_LIST_DIR}/../periph_interface
     Core/Inc
     Drivers/CMSIS/Include
     Drivers/CMSIS/Device/ST/STM32F4xx/Include
@@ -22,4 +25,4 @@ target_compile_definitions(${MODULE_NAME} PUBLIC
     STM32F407xx)
 
 target_link_options(${MODULE_NAME} PUBLIC
-    -T "${CMAKE_CURRENT_LIST_DIR}/STM32F407ZETx_FLASH.ld")
+    -T "${CMAKE_CURRENT_LIST_DIR}/STM32F407ZGTx_FLASH.ld")

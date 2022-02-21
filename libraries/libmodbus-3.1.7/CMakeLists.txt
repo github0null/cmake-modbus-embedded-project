@@ -25,7 +25,7 @@ set(libmodbus_SRCS
     ports/modbus_port.c
     ports/modbus_rtu_port.c)
 
-add_library(${LIB_NAME} STATIC 
+add_library(${LIB_NAME} OBJECT 
     ${libmodbus_SRCS})
 
 target_include_directories(${LIB_NAME} PUBLIC 
@@ -36,4 +36,4 @@ target_include_directories(${LIB_NAME} PUBLIC
 target_include_directories(${LIB_NAME} PRIVATE
     ${CMAKE_CURRENT_BINARY_DIR}/conf)
 
-target_link_libraries(${LIB_NAME} periph_interface)
+target_link_libraries(${LIB_NAME} periph_config)
